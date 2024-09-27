@@ -91,9 +91,14 @@ $(function(){
                         <td>${task.MontoMax}</td>
                         <td>${task.VigenciaInicio}</td>
                         <td>${task.VigenciaFin}</td>
-                        
-                        ${userRole === 1 ? `<td><button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>
-                                            <button class="btn btn-primary text-center task-item"><i class="bi bi-pencil-square"></i></button></tr>` : ''}
+                        <td>
+        ${userRole === 1 ? `
+            <button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-primary text-center task-item"><i class="bi bi-pencil-square"></i></button>
+        ` : userRole === 2 ? `
+            <button class="btn btn-primary text-center task-item"><i class="bi bi-pencil-square"></i></button>
+        ` : ''}
+    </td>
                     
                     `;
                 });
