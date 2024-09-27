@@ -169,7 +169,7 @@ include("php/check_session.php");
                                                 return "desconocido";
                                         }
                                     }
-                                    echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
+                                    echo $_SESSION["oficina"] . "<br> " .$_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
                                     ?>
                                 </span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
