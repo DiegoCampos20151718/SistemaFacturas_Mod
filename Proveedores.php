@@ -27,9 +27,12 @@ include("php/check_session.php");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/imss-logo-gret.png" />
 </head>
 
 <body id="page-top">
@@ -42,9 +45,9 @@ include("php/check_session.php");
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                    <div class="sidebar-brand-icon center">
-                        <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
-                    </div>
+                <div class="sidebar-brand-icon center">
+                    <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
+                </div>
             </a>
 
             <!-- Divider -->
@@ -67,8 +70,8 @@ include("php/check_session.php");
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registros</span>
                 </a>
@@ -97,7 +100,7 @@ include("php/check_session.php");
 
             <!-- Heading -->
             <div class="sidebar-heading">
-            Mas acciones
+                Mas acciones
             </div>
 
             <!-- Nav Item - Proveedores -->
@@ -147,7 +150,7 @@ include("php/check_session.php");
                     </button>
 
                     <!-- Topbar Navbar -->
-                   <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -155,11 +158,25 @@ include("php/check_session.php");
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php 
-                                echo $_SESSION["nombre"]." ". $_SESSION["apellido"] ;
-                                ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php
+
+                                    function rol($rol)
+                                    {
+                                        switch ($rol) {
+                                            case 1:
+                                                return "admin";
+                                            case 2:
+                                                return "user";
+                                            default:
+                                                return "desconocido";
+                                        }
+                                    }
+
+                                    echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . " " . rol($_SESSION["rol"]);
+                                    ?>
+                                </span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -184,9 +201,11 @@ include("php/check_session.php");
                     <div class="p-3">
                         <div class="row">
                             <div class="col-md-3">
-                                <button  type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#provModal" id="agregarP"><i class="bi bi-file-earmark-plus">Agregar proveedor</i></button>
+                                <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                                    data-bs-target="#provModal" id="agregarP"><i class="bi bi-file-earmark-plus">Agregar
+                                        proveedor</i></button>
                             </div>
-                        <!--Contenedor de busqueda-->
+                            <!--Contenedor de busqueda-->
                             <div class="col-md-9">
                                 <div class="card my-4" id="task-result">
                                     <div class="card-body">
@@ -196,7 +215,7 @@ include("php/check_session.php");
                                     </div>
 
                                 </div>
-                                
+
                             </div>
                         </div>
                         <!--TABLA CONTRATOS-->
@@ -211,7 +230,7 @@ include("php/check_session.php");
                                         </tr>
                                     </thead>
                                     <tbody id="proveedores">
-                                
+
 
 
 
@@ -222,40 +241,44 @@ include("php/check_session.php");
 
                         </div>
                         <!-- Button trigger modal -->
-                    
-                       
+
+
                         <!-- Modal Form -->
                         <div class="modal fade" id="provModal">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Agregar Proveedor</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="proveedor-form" >
+                                        <form id="proveedor-form">
                                             <input type="hidden" id="modo" name="modo" value="">
                                             <div class="form-group">
                                                 <label for="NumeroProveedor">Número de Proveedor</label>
-                                                <input type="text"name="NoProveedor" id="NoProveedor" class="form-control" required autocomplete="off">
-                                                    
-                                              
+                                                <input type="text" name="NoProveedor" id="NoProveedor"
+                                                    class="form-control" required autocomplete="off">
+
+
                                             </div>
                                             <div class="form-group">
                                                 <label for="NombreProveedor">Nombre de Proveedor</label>
-                                                <input type="text" name="NomProveedor" id="NomProveedor" class="form-control" required autocomplete="off">
+                                                <input type="text" name="NomProveedor" id="NomProveedor"
+                                                    class="form-control" required autocomplete="off">
                                             </div>
-                                            
+
                                             <div class="modal-footer">
-                                                
-                                                <button type="submit" class="btn btn-primary text-center w-100">Guardar proveedor</button>
+
+                                                <button type="submit" class="btn btn-primary text-center w-100">Guardar
+                                                    proveedor</button>
                                             </div>
-                                            
-                                            
+
+
                                         </form>
                                     </div>
-                                    
-                                  
+
+
                                 </div>
                             </div>
                         </div>
@@ -301,7 +324,8 @@ include("php/check_session.php");
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="php/logout.php">Cerrar sesión</a>

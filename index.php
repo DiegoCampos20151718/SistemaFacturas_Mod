@@ -22,7 +22,7 @@ include("php/check_session.php");
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
+    <link rel="shortcut icon" href="img/imss-logo-gret.png" />
 </head>
 
 <body id="page-top">
@@ -35,9 +35,9 @@ include("php/check_session.php");
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                    <div class="sidebar-brand-icon center">
-                        <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
-                    </div>
+                <div class="sidebar-brand-icon center">
+                    <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
+                </div>
             </a>
 
 
@@ -61,8 +61,8 @@ include("php/check_session.php");
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registros</span>
                 </a>
@@ -148,12 +148,24 @@ include("php/check_session.php");
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                <?php 
-                                echo $_SESSION["nombre"]." ". $_SESSION["apellido"] ;
-                                ?>
+                                    <?php
+
+                                    function rol($rol)
+                                    {
+                                        switch ($rol) {
+                                            case 1:
+                                                return "admin";
+                                            case 2:
+                                                return "user";
+                                            default:
+                                                return "desconocido";
+                                        }
+                                    }
+
+                                    echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . " " . rol($_SESSION["rol"]);
+                                    ?>
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -370,6 +382,8 @@ include("php/check_session.php");
 
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
+
+
 
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
