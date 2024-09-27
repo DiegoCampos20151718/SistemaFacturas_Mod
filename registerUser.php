@@ -1,19 +1,68 @@
 <?php
+// Include session check and database connection
 include("php/check_session.php");
 include("php/database.php");
-$sql = "SELECT id, oficina FROM oficinas"; // Cambia 'oficinas' al nombre correcto de tu tabla
+
+// Obtener oficinas
+$sql = "SELECT id, oficina FROM oficinas";
 $result = $connecction->query($sql);
 $oficinas = [];
-
 if ($result->num_rows > 0) {
-    // Almacenar cada fila en un array
     while ($row = $result->fetch_assoc()) {
         $oficinas[] = $row;
     }
 }
-$connecction->close(); // Cerrar la conexión
 
+// Obtener unidades
+$sql1 = "SELECT id, nombre, unidad FROM unidades";
+$result1 = $connecction->query($sql1);
+$unidades = [];
+if ($result1->num_rows > 0) {
+    while ($row = $result1->fetch_assoc()) {
+        $unidades[] = $row;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Recoger datos del formulario
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $matricula = $_POST['matricula'];
+    $rol = $_POST['rol'];
+    $oficina = $_POST['oficina'];
+    $unidad = $_POST['unidad'];
+    $password = $_POST['password'];
+    $repeatPassword = $_POST['repeatPassword'];
+
+    // Validación de campos vacíos
+    if (empty($nombre) || empty($apellido) || empty($matricula) || empty($rol) || empty($oficina) || empty($unidad) || empty($password) || empty($repeatPassword)) {
+        echo "<script>Swal.fire('Error', 'Por favor, complete todos los campos', 'error');</script>";
+    } elseif ($password != $repeatPassword) {
+        echo "<script>Swal.fire('Error', 'Las contraseñas no coinciden', 'error');</script>";
+    } elseif (!in_array($oficina, array_column($oficinas, 'id')) || !in_array($unidad, array_column($unidades, 'id'))) {
+        echo "<script>Swal.fire('Error', 'Oficina o unidad seleccionada no es válida', 'error');</script>";
+    } else {
+        // Insertar el usuario en la base de datos
+        $stmt = $connecction->prepare("INSERT INTO usuarios (nombre, apellido, matricula, rol, oficina, unidad, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $stmt->bind_param("sssssss", $nombre, $apellido, $matricula, $rol, $oficina, $unidad, $hashedPassword);
+
+            if ($stmt->execute()) {
+                echo "<script>Swal.fire('Éxito', 'Usuario registrado con éxito', 'success');</script>";
+            } else {
+                echo "<script>Swal.fire('Error', 'Hubo un problema al registrar el usuario', 'error');</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>Swal.fire('Error', 'No se pudo preparar la consulta', 'error');</script>";
+        }
+    }
+    $connecction->close();
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -222,41 +271,52 @@ $connecction->close(); // Cerrar la conexión
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Regístrate!</h1>
                                     </div>
-                                    <form class="user" id="register-form">
+                                    <form class="user" id="register-form" method="POST" action="">
                                         <div class="form-group row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="exampleFirstName">Nombre</label>
                                                 <input type="text" class="form-control" id="exampleFirstName"
-                                                    placeholder="Nombre" autocomplete="off">
+                                                    name="nombre" placeholder="Nombre" autocomplete="off">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="exampleLastName">Apellido</label>
                                                 <input type="text" class="form-control" id="exampleLastName"
-                                                    placeholder="Apellido" autocomplete="off">
+                                                    name="apellido" placeholder="Apellido" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="exampleInputEmail">Matricula</label>
                                             <input type="text" class="form-control" id="exampleInputEmail"
-                                                placeholder="Matricula" autocomplete="off">
+                                                name="matricula" placeholder="Matricula" autocomplete="off">
                                         </div>
                                         <div class="form-group row mb-3">
                                             <div class="col-sm-6">
-                                                <label for="proveedor" class="form-label">Rol de usuario:</label>
-                                                <select class="form-select" id="proveedor" name="proveedor" required>
+                                                <label for="rol" class="form-label">Rol de usuario:</label>
+                                                <select class="form-select" id="rol" name="rol" required>
                                                     <option selected>Rol de usuario</option>
                                                     <option value="1">Administrador</option>
                                                     <option value="2">Usuario de oficina</option>
                                                     <option value="3">Usuario de consulta</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="col-sm-6">
                                                 <label for="oficinas" class="form-label">Oficinas:</label>
-                                                <select class="form-select" id="oficinas" name="oficinas" required>
+                                                <select class="form-select" id="oficinas" name="oficina" required>
                                                     <option selected>Selecciona la oficina correspondiente</option>
                                                     <?php foreach ($oficinas as $oficina): ?>
                                                         <option value="<?php echo $oficina['id']; ?>">
                                                             <?php echo $oficina['id'] . ' - ' . $oficina['oficina']; ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="unidades" class="form-label">Unidades:</label>
+                                                <select class="form-select" id="unidades" name="unidad" required>
+                                                    <option selected>Selecciona la unidad correspondiente</option>
+                                                    <?php foreach ($unidades as $unidad): ?>
+                                                        <option value="<?php echo $unidad['id']; ?>">
+                                                            <?php echo $unidad['id'] . ' - ' . $unidad['nombre'] . ' - ' . $unidad['unidad']; ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -267,18 +327,19 @@ $connecction->close(); // Cerrar la conexión
                                             <div class="col-sm-6">
                                                 <label for="exampleInputPassword">Contraseña</label>
                                                 <input type="password" class="form-control" id="exampleInputPassword"
-                                                    placeholder="Contraseña" autocomplete="off">
+                                                    name="password" placeholder="Contraseña" autocomplete="off">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="exampleRepeatPassword">Repetir Contraseña</label>
                                                 <input type="password" class="form-control" id="exampleRepeatPassword"
-                                                    placeholder="Repetir Contraseña" autocomplete="off">
+                                                    name="repeatPassword" placeholder="Repetir Contraseña"
+                                                    autocomplete="off">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">Registrar
                                             Cuenta</button>
-                                        <hr>
                                     </form>
+
                                     <hr>
                                 </div>
                             </div>
