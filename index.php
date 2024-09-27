@@ -59,20 +59,15 @@ include("php/check_session.php");
                 Menú
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                <a class="nav-link" href="RegistroFactura.php">
                     <i class="fas fa-fw fa fa-archive"></i>
-                    <span>Registros</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Registros:</h6>
-                        <a class="collapse-item" href="RegistroFactura.php">Registrar Factura</a>
-                        <a class="collapse-item" href="RegistroDisponibilidad.php">Registro de disponibilidad</a>
-                    </div>
-                </div>
+                    <span>Registrar Factura</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="RegistroDisponibilidad.php">
+                    <i class="fas fa-fw fa fa-archive"></i>
+                    <span>Registrar disponibilidad</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="Facturas.php">
