@@ -1,10 +1,12 @@
+
 $(function(){
+    
     $("#task-result").hide();
     
     fetchTasks();
     let edit = false;
 
-    //Agregar contrato o editar
+    // Agregar contrato o editar
     $("#contrato-form").submit(function (e) {
         e.preventDefault();
         
@@ -70,15 +72,15 @@ $(function(){
         edit = false;
     });
 
-    //Mostrar datos en la tabla
-    function fetchTasks(){
+    // Mostrar datos en la tabla
+    function fetchTasks() {
         $.ajax({
             url: "php/tabla-contratos.php",
             type: "GET",
-            success: function(response){
+            success: function(response) {
                 const tasks = JSON.parse(response);
                 let template = ``;
-                tasks.forEach(task =>{
+                tasks.forEach(task => {
                     template += `
                     <tr taskId="${task.NoContrato}">
                         <td>${task.NoContrato}</td>
@@ -89,19 +91,18 @@ $(function(){
                         <td>${task.MontoMax}</td>
                         <td>${task.VigenciaInicio}</td>
                         <td>${task.VigenciaFin}</td>
-                        <td>
-                        <button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>
-                        <button class="btn btn-primary text-center task-item" ><i class="bi bi-pencil-square"></i></button>
-                        </td>
-                    </tr> 
+                        
+                        ${userRole === 1 ? `<td><button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-primary text-center task-item"><i class="bi bi-pencil-square"></i></button></tr>` : ''}
+                    
                     `;
-                })
+                });
                 $("#tasks").html(template);
             }
-        })
+        });
     }
 
-    //ELIMINAR
+    // ELIMINAR
     $(document).on("click", ".task-delete", function() {
         const element = $(this).closest('tr');
         const NoContrato = $(element).attr("taskId");
@@ -125,7 +126,7 @@ $(function(){
     });
 
     // Evento para hacer clic en un elemento para editar el contrato
-    $(document).on("click", ".task-item", function(){
+    $(document).on("click", ".task-item", function() {
         const element = $(this).closest('tr');
         const NoContrato = $(element).attr("taskId");
        
@@ -151,7 +152,7 @@ $(function(){
         });
     });
 
-    //NUMERO DE PROVEEDOR SELECT
+    // NUMERO DE PROVEEDOR SELECT
     $(document).ready(function() {
         $.ajax({
             url: "php/getNoProveedor.php",
@@ -159,7 +160,7 @@ $(function(){
             success: function(response) {
                 var options = "";
                 var proveedores = JSON.parse(response);
-                proveedores.forEach(function(proveedor){
+                proveedores.forEach(function(proveedor) {
                     options += "<option value='" + proveedor.NoProveedor + "'>" + proveedor.NoProveedor + "</option>";
                 });
                 $("#NoProveedor").append(options);

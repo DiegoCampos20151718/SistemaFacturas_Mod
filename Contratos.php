@@ -1,6 +1,10 @@
 <?php
 include("php/check_session.php");
 ?>
+<script>
+    var userRole = <?php echo json_encode($_SESSION["rol"]); ?>; // Asumiendo que rol es un número
+</script>
+
 <!DOCTYPE html>
 <html lang="es-AR">
 
@@ -28,9 +32,12 @@ include("php/check_session.php");
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="style.css">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/imss-logo-gret.png" />
 </head>
 
 <body id="page-top">
@@ -43,9 +50,9 @@ include("php/check_session.php");
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                    <div class="sidebar-brand-icon center">
-                        <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
-                    </div>
+                <div class="sidebar-brand-icon center">
+                    <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
+                </div>
             </a>
 
             <!-- Divider -->
@@ -93,7 +100,7 @@ include("php/check_session.php");
 
             <!-- Heading -->
             <div class="sidebar-heading">
-            Mas acciones
+                Mas acciones
             </div>
             <!-- Nav Item - Proveedores -->
             <li class="nav-item">
@@ -115,13 +122,13 @@ include("php/check_session.php");
                     <i class="fas fa-fw fa-table"></i>
                     <span>Disponible en contratos</span></a>
             </li>
-            
+
             <?php if ($_SESSION["rol"] == 1): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="registerUser.php">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Registro de nuevo usuario</span></a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="registerUser.php">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Registro de nuevo usuario</span></a>
+                </li>
             <?php endif; ?>
 
             <!-- Divider -->
@@ -152,7 +159,7 @@ include("php/check_session.php");
                     <!-- Topbar Search -->
 
                     <!-- Topbar Navbar -->
-                   <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -161,7 +168,7 @@ include("php/check_session.php");
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                <?php
+                                    <?php
                                     function rol($rol)
                                     {
                                         switch ($rol) {
@@ -170,7 +177,7 @@ include("php/check_session.php");
                                             case 2:
                                                 return "Usuario de oficina";
                                             case 3:
-                                                    return "Usuario para consulta";
+                                                return "Usuario para consulta";
                                             default:
                                                 return "desconocido";
                                         }
@@ -178,8 +185,7 @@ include("php/check_session.php");
                                     echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br>" . rol($_SESSION["rol"]);
                                     ?>
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -198,83 +204,94 @@ include("php/check_session.php");
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-               
+
 
                     <!-- Page Heading -->
 
-                        <!--Tabla-->
-                        <div class="p-3">
-                            <div class="row">
+                    <!--Tabla-->
+                    <div class="p-3">
+                        <div class="row">
+                            <?php if ($_SESSION["rol"] == 1): ?>
                                 <div class="col-md-3">
-                                    <button  type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#myModal" id="botonCrear"><i class="bi bi-file-earmark-plus">Nuevo contrato</i></button>
-                                </div>
+                                    <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                                        data-bs-target="#myModal" id="botonCrear"><i class="bi bi-file-earmark-plus">Nuevo
+                                            contrato</i></button>
+                                </div> <?php endif; ?>
+
+
                             <!--Contenedor de busqueda-->
-                                <div class="col-md-9">
-                                    <div class="card my-4" id="task-result">
-                                        <div class="card-body">
-                                            <ul id="container">
+                            <div class="col-md-9">
+                                <div class="card my-4" id="task-result">
+                                    <div class="card-body">
+                                        <ul id="container">
 
-                                            </ul>
-                                        </div>
-
+                                        </ul>
                                     </div>
-                                    
+
                                 </div>
+
                             </div>
-                            <!--TABLA CONTRATOS-->
-                            <div class="row">
-                                <div>
-                                    <table class="table table-responsive table-bordered table-hover mt-3 text-center">
-                                        <thead>
-                                            <tr>
-                                                <td>No. Contrato</td>
-                                                <td>No. Fianza</td>
-                                                <td>No. Proveedor</td>
-                                                <td>Nom Proveedor</td>
-                                                <td>Monto min</td>
-                                                <td>Monto Máx</td>
-                                                <td>Vig Inicio</td>
-                                                <td>Vig Fin</td>
+                        </div>
+                        <!--TABLA CONTRATOS-->
+                        <div class="row">
+                            <div>
+                                <table class="table table-responsive table-bordered table-hover mt-3 text-center">
+                                    <thead>
+                                        <tr>
+                                            <td>No. Contrato</td>
+                                            <td>No. Fianza</td>
+                                            <td>No. Proveedor</td>
+                                            <td>Nom Proveedor</td>
+                                            <td>Monto min</td>
+                                            <td>Monto Máx</td>
+                                            <td>Vig Inicio</td>
+                                            <td>Vig Fin</td>
+                                            <?php if ($_SESSION["rol"] == 1): ?>
+                                                <!-- Condición para mostrar la columna de Acciones -->
                                                 <td>Acciones</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tasks">
-                                    
+                                            <?php endif; ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tasks">
 
 
 
-                                        </tbody>
-                                    </table>
-    
-                                </div>
-    
+
+                                    </tbody>
+                                </table>
+
                             </div>
-                            <!-- Button trigger modal -->
-                        
-                           
-                            <!-- Modal Form -->
-                            <div class="modal fade" id="myModal">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Contrato</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
+
+                        </div>
+                        <!-- Button trigger modal -->
+
+
+                        <!-- Modal Form -->
+                        <div class="modal fade" id="myModal">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Contrato</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         <form id="contrato-form">
                                             <input type="hidden" id="modo" name="modo" value="">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="NumeroDeContrato">Numero de Contrato</label>
-                                                        <input type="text" name="NoContrato" id="NoContrato" class="form-control my-2" autocomplete="off">
+                                                        <input type="text" name="NoContrato" id="NoContrato"
+                                                            class="form-control my-2" autocomplete="off">
                                                         <input type="hidden" name="newNoContrato" id="newNoContrato">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="NoFianza">Numero de Fianza</label>
-                                                        <input type="text" name="NoFianza" id="NoFianza" class="form-control my-2" required autocomplete="off">
+                                                        <input type="text" name="NoFianza" id="NoFianza"
+                                                            class="form-control my-2" required autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,7 +299,8 @@ include("php/check_session.php");
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="NumeroProveedor">Número de Proveedor</label>
-                                                        <select name="NoProveedor" id="NoProveedor" class="form-control" required>
+                                                        <select name="NoProveedor" id="NoProveedor" class="form-control"
+                                                            required>
                                                             <option selected>Selecciona el número de proveedor</option>
                                                         </select>
                                                     </div>
@@ -290,7 +308,8 @@ include("php/check_session.php");
                                                 <div class="col-md-9">
                                                     <div class="form-group">
                                                         <label for="NombreProveedor">Nombre de Proveedor</label>
-                                                        <input type="text" name="NomProveedor" id="NomProveedor" class="form-control" readonly>
+                                                        <input type="text" name="NomProveedor" id="NomProveedor"
+                                                            class="form-control" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,73 +317,80 @@ include("php/check_session.php");
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="MontoMin">Monto Minimo</label>
-                                                        <input type="number" name="MontoMin" id="MontoMin" class="form-control my-2" required min="0" autocomplete="off">
+                                                        <input type="number" name="MontoMin" id="MontoMin"
+                                                            class="form-control my-2" required min="0"
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="MontoMax">Monto Maximo</label>
-                                                        <input type="number" name="MontoMax" id="MontoMax" class="form-control my-2" required min="0" autocomplete="off">
+                                                        <input type="number" name="MontoMax" id="MontoMax"
+                                                            class="form-control my-2" required min="0"
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="VigenciaInicio">Vigencia Inicio</label>
-                                                        <input type="date" name="VigenciaInicio" id="VigenciaInicio" class="form-control my-2" required autocomplete="off">
+                                                        <input type="date" name="VigenciaInicio" id="VigenciaInicio"
+                                                            class="form-control my-2" required autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="VigenciaFin">Vigencia Fin:</label>
-                                                        <input type="date" name="VigenciaFin" id="VigenciaFin" class="form-control my-2" required autocomplete="off">
+                                                        <input type="date" name="VigenciaFin" id="VigenciaFin"
+                                                            class="form-control my-2" required autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary text-center w-100">Guardar contrato</button>
+                                                <button type="submit" class="btn btn-primary text-center w-100">Guardar
+                                                    contrato</button>
                                             </div>
                                         </form>
 
-                                        </div>
-                                        
-                                      
                                     </div>
-                                </div>
-                            </div>
 
-                        </div>
-                        
-    
-                        
-                            <!--Fin tabla-->
-                    </div>
-                    <!--Inicio Modal-->
-                    
-                </div>
-                <!-- /.container-fluid -->
-                    <!-- Footer -->
-                        <footer class="sticky-footer bg-white">
-                            <div class="container my-auto">
-                                <div class="copyright text-center my-auto">
-                                    <span>Copyright &copy; Sistema Facturas 2024</span>
+
                                 </div>
                             </div>
-                        </footer>
+                        </div>
+
+                    </div>
+
+
+
+                    <!--Fin tabla-->
+                </div>
+                <!--Inicio Modal-->
 
             </div>
-          
-                <!-- End of Footer -->
-                    
-             <!-- End of Main Content -->
+            <!-- /.container-fluid -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Sistema Facturas 2024</span>
+                    </div>
+                </div>
+            </footer>
 
-            
         </div>
-        
-        <!-- End of Content Wrapper -->
+
+        <!-- End of Footer -->
+
+        <!-- End of Main Content -->
+
+
+    </div>
+
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-    
+
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -382,7 +408,8 @@ include("php/check_session.php");
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="php/logout.php">Cerrar sesión</a>
