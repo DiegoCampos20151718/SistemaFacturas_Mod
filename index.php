@@ -148,20 +148,20 @@ include("php/check_session.php");
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php
-
+                                <?php
                                     function rol($rol)
                                     {
                                         switch ($rol) {
                                             case 1:
-                                                return "admin";
+                                                return "administrador";
                                             case 2:
-                                                return "user";
+                                                return "Usuario de oficina";
+                                            case 3:
+                                                    return "Usuario para consulta";
                                             default:
                                                 return "desconocido";
                                         }
                                     }
-
                                     echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . " " . rol($_SESSION["rol"]);
                                     ?>
                                 </span>
