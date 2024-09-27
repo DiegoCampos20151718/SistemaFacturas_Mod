@@ -2,7 +2,7 @@
 include("php/check_session.php");
 ?>
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="en">
 
 <head>
 
@@ -10,27 +10,26 @@ include("php/check_session.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="Erik Esquivel">
+    <meta name="author" content="">
 
-    <title>Contratos</title>
+    <title>Registro Disponibilidad</title>
     <!-- SweetAlert2 CSS local -->
     <link rel="stylesheet" href="libs/SweetAlert2/sweetalert2.min.css">
     <!-- SweetAlert2 JS local -->
     <script src="libs/SweetAlert2/sweetalert2.min.js"></script>
-
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <!-- Icons boostrap-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+ <!-- Icons boostrap-->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+ <link rel="stylesheet" href="#">
     <!-- Custom styles for this template-->
+    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <!--<link rel="stylesheet" href="style.css">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
 </head>
 
 <body id="page-top">
@@ -154,6 +153,7 @@ include("php/check_session.php");
                     </button>
 
                     <!-- Topbar Search -->
+                    
 
                     <!-- Topbar Navbar -->
                    <ul class="navbar-nav ml-auto">
@@ -164,8 +164,7 @@ include("php/check_session.php");
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                <?php
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php
                                     function rol($rol)
                                     {
                                         switch ($rol) {
@@ -180,17 +179,17 @@ include("php/check_session.php");
                                         }
                                     }
                                     echo $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br>" . rol($_SESSION["rol"]);
-                                    ?>
-                                </span>
+                                    ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar sesion
+                                    Cerrar Sesion
                                 </a>
                             </div>
                         </li>
@@ -202,178 +201,166 @@ include("php/check_session.php");
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-               
-
-                    <!-- Page Heading -->
-
-                        <!--Tabla-->
-                        <div class="p-3">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <button  type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#myModal" id="botonCrear"><i class="bi bi-file-earmark-plus">Nuevo contrato</i></button>
-                                </div>
-                            <!--Contenedor de busqueda-->
-                                <div class="col-md-9">
-                                    <div class="card my-4" id="task-result">
-                                        <div class="card-body">
-                                            <ul id="container">
-
-                                            </ul>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="nuevoCodigoModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="nuevoCodigoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="nuevoCodigoModalLabel">Nueva Codificación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <!--TABLA CONTRATOS-->
-                            <div class="row">
-                                <div>
-                                    <table class="table table-responsive table-bordered table-hover mt-3 text-center">
-                                        <thead>
-                                            <tr>
-                                                <td>No. Contrato</td>
-                                                <td>No. Fianza</td>
-                                                <td>No. Proveedor</td>
-                                                <td>Nom Proveedor</td>
-                                                <td>Monto min</td>
-                                                <td>Monto Máx</td>
-                                                <td>Vig Inicio</td>
-                                                <td>Vig Fin</td>
-                                                <td>Acciones</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tasks">
-                                    
+                            <div class="modal-body">
+                                <form id="nuevoCodigoForm">
+                                  <div class="form-group">
+                                    <label for="cuentaInput">Cuenta</label>
+                                    <input type="text" class="form-control" id="cuentaInput" required maxlength="8" autocomplete="off">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="udeiInput">UDEI</label>
+                                    <input type="text" class="form-control" id="udeiInput" required maxlength="6" autocomplete="off">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="ccInput">CC</label>
+                                    <input type="text" class="form-control" id="ccInput" required maxlength="6" autocomplete="off">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="anio">Año</label>
+                                    <select class="form-select" aria-label="Default select example" id="anioInput" name="anio" required ></select>
+                                    <script>
+                                        function generarOpcionesAnos(anoInicial, cantidadAnos) {
+                                            const selectAno = document.getElementById('anioInput');
+                                                                    
+                                            selectAno.innerHTML = '';
 
-
-
-                                        </tbody>
-                                    </table>
-    
-                                </div>
-    
-                            </div>
-                            <!-- Button trigger modal -->
-                        
-                           
-                            <!-- Modal Form -->
-                            <div class="modal fade" id="myModal">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Contrato</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                        <form id="contrato-form">
-                                            <input type="hidden" id="modo" name="modo" value="">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label for="NumeroDeContrato">Numero de Contrato</label>
-                                                        <input type="text" name="NoContrato" id="NoContrato" class="form-control my-2" autocomplete="off">
-                                                        <input type="hidden" name="newNoContrato" id="newNoContrato">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label for="NoFianza">Numero de Fianza</label>
-                                                        <input type="text" name="NoFianza" id="NoFianza" class="form-control my-2" required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="NumeroProveedor">Número de Proveedor</label>
-                                                        <select name="NoProveedor" id="NoProveedor" class="form-control" required>
-                                                            <option selected>Selecciona el número de proveedor</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="form-group">
-                                                        <label for="NombreProveedor">Nombre de Proveedor</label>
-                                                        <input type="text" name="NomProveedor" id="NomProveedor" class="form-control" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="MontoMin">Monto Minimo</label>
-                                                        <input type="number" name="MontoMin" id="MontoMin" class="form-control my-2" required min="0" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="MontoMax">Monto Maximo</label>
-                                                        <input type="number" name="MontoMax" id="MontoMax" class="form-control my-2" required min="0" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="VigenciaInicio">Vigencia Inicio</label>
-                                                        <input type="date" name="VigenciaInicio" id="VigenciaInicio" class="form-control my-2" required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="VigenciaFin">Vigencia Fin:</label>
-                                                        <input type="date" name="VigenciaFin" id="VigenciaFin" class="form-control my-2" required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary text-center w-100">Guardar contrato</button>
-                                            </div>
-                                        </form>
-
-                                        </div>
+                                            const opcionVacia = document.createElement('option');
+                                            opcionVacia.value = '';
+                                            opcionVacia.text = 'Seleccione un año';
+                                            selectAno.add(opcionVacia);
                                         
-                                      
-                                    </div>
-                                </div>
-                            </div>
-
+                                        
+                                            for (let i = 0; i < cantidadAnos; i++) {
+                                                const ano = anoInicial + i;
+                                                const opcion = document.createElement('option');
+                                                opcion.value = ano;
+                                                opcion.text = ano;
+                                                selectAno.add(opcion);
+                                            }
+                                        }
+                                        
+                                        window.onload = function() {
+                                            const fechaActual = new Date();
+                                            const anoActual = fechaActual.getFullYear();
+                                            generarOpcionesAnos(anoActual, 2); 
+                                        };
+                                    </script>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary" id="guardarCodigoBtn">Guardar</button>
+                                </form>
+                              </div>
                         </div>
-                        
-    
-                        
-                            <!--Fin tabla-->
+                        </div>
                     </div>
-                    <!--Inicio Modal-->
-                    
-                </div>
-                <!-- /.container-fluid -->
-                    <!-- Footer -->
-                        <footer class="sticky-footer bg-white">
-                            <div class="container my-auto">
-                                <div class="copyright text-center my-auto">
-                                    <span>Copyright &copy; Sistema Facturas 2024</span>
+                    <!-- Modal para editar datos -->
+                    <div class="modal fade" id="editarDatosModal" tabindex="-1" aria-labelledby="editarDatosModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editarDatosModalLabel">Editar Datos</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editarDatosForm">
+                                        <div class="form-group">
+                                            <label for="editarImporteDefInput">Importe Def</label>
+                                            <input type="number" class="form-control" id="editarImporteDefInput" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editarCargosInput">Cargos</label>
+                                            <input type="number" class="form-control" id="editarCargosInput" required>
+                                        </div>
+                                        <input type="hidden" id="editarMesInput">
+                                        <input type="hidden" id="editarAnioInput">
+                                        <input type="hidden" id="editarCodificacionInput">
+                                        <button type="submit" class="btn btn-primary" id="guardarEdicionBtn">Guardar</button>
+                                    </form>
                                 </div>
                             </div>
-                        </footer>
+                        </div>
+                    </div>
 
+                   <!--TABLA-->
+                   <div class="container">
+
+<div class="card o-hidden shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">¡Regístrate!</h1>
+                    </div>
+                    <form class="user" id="register-form">
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-6">
+                                <label for="exampleFirstName">Nombre</label>
+                                <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="Nombre" autocomplete="off">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="exampleLastName">Apellido</label>
+                                <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Apellido" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="exampleInputEmail">Correo</label>
+                            <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Correo" autocomplete="off">
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-6">
+                                <label for="exampleInputPassword">Contraseña</label>
+                                <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Contraseña" autocomplete="off">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="exampleRepeatPassword">Repetir Contraseña</label>
+                                <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repetir Contraseña" autocomplete="off">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block">Registrar Cuenta</button>
+                        <hr>
+                    </form>
+                    <hr>
+                    <div class="text-center">
+                        <a class="small" href="login.php">¿Ya tienes cuenta? ¡Inicia sesión!</a>
+                    </div>
+                </div>
             </div>
-          
-                <!-- End of Footer -->
-                    
-             <!-- End of Main Content -->
-
-            
         </div>
-        
+    </div>
+</div>
+
+</div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Sistema Facturas 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-    
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+    
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -402,11 +389,10 @@ include("php/check_session.php");
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="ajax/jquery.js"></script>
-    <script src="ajax/ajax.js"></script>
-
+    <script src="ajax/ajaxDisponibilidad.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <!--<script src="app.js"></script>-->
 
 </body>
 

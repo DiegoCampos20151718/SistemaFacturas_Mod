@@ -118,6 +118,14 @@ include("php/check_session.php");
                     <i class="fas fa-fw fa-table"></i>
                     <span>Disponible en contratos</span></a>
             </li>
+            
+            <?php if ($_SESSION["rol"] == 1): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="registerUser.php">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Registro de nuevo usuario</span></a>
+            </li>
+            <?php endif; ?>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
