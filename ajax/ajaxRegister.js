@@ -6,9 +6,11 @@ $(document).ready(function() {
         // Obtener los valores de los campos
         var firstName = $('#exampleFirstName').val();
         var lastName = $('#exampleLastName').val();
-        var email = $('#exampleInputEmail').val();
+        var matricula = $('#exampleMatricula').val();
         var password = $('#exampleInputPassword').val();
         var confirmPassword = $('#exampleRepeatPassword').val();
+        var rol = $('#exampleRol').val();
+        var oficina = $('#exampleOficina').val();
 
         // Validar campos
         var isValid = true;
@@ -18,15 +20,21 @@ $(document).ready(function() {
         } else if (lastName.trim() === '') {
             isValid = false;
             Swal.fire('Error', 'Por favor, ingresa tu apellido.', 'error');
-        } else if (email.trim() === '') {
+        } else if (matricula.trim() === '') {
             isValid = false;
-            Swal.fire('Error', 'Por favor, ingresa tu correo electrónico.', 'error');
+            Swal.fire('Error', 'Por favor, ingresa tu matricula.', 'error');
         } else if (password.trim() === '') {
             isValid = false;
             Swal.fire('Error', 'Por favor, ingresa una contraseña.', 'error');
         } else if (password !== confirmPassword) {
             isValid = false;
             Swal.fire('Error', 'Las contraseñas no coinciden.', 'error');
+        }else if (rol.trim() === '') {
+            isValid = false;
+            Swal.fire('Error', 'Seleccione un rol valido', 'error');
+        }else if (oficina.trim() === '') {
+            isValid = false;
+            Swal.fire('Error', 'Seleccione una oficina valida.', 'error');
         }
 
         if (isValid) {
@@ -37,8 +45,10 @@ $(document).ready(function() {
                 data: {
                     firstName: firstName,
                     lastName: lastName,
-                    email: email,
-                    password: password
+                    matricula: matricula,
+                    password: password,
+                    rol: rol,
+                    oficina:oficina
                 },
                 success: function(response) {
                     Swal.fire({
@@ -46,7 +56,7 @@ $(document).ready(function() {
                         text: 'Redireccionando a la página de login...',
                         icon: 'success'
                     }).then(() => {
-                        window.location.href = 'login.php';
+                        window.location.href = 'registerUser.php';
                     });
                 },
                 error: function() {
@@ -58,13 +68,13 @@ $(document).ready(function() {
 
     $('#login-form').submit(function(e) {
         e.preventDefault();
-        var email = $('#email').val();
+        var matricula = $('#matricula').val();
         var password = $('#password').val();
 
         $.ajax({
             type: 'POST',
             url: 'php/Login/login.php',
-            data: { email: email, password: password },
+            data: { matricula: matricula, password: password },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {

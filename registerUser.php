@@ -237,7 +237,7 @@ $connecction->close(); // Cerrar la conexión
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="exampleInputEmail">Matricula</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail"
+                                            <input type="text" class="form-control" id="exampleInputEmail"
                                                 placeholder="Matricula" autocomplete="off">
                                         </div>
                                         <div class="form-group row mb-3">
