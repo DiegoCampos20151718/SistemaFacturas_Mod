@@ -33,7 +33,7 @@
             
             <!-- USUARIO --> 
             <div class="wrap-input100"> 
-                <input class="input100" type="email" id="email" aria-describedby="emailHelp" placeholder="Ingrese su correo" name="email" required>	 
+                <input class="input100" type="email" id="matricula" aria-describedby="emailHelp" placeholder="Ingrese su Matricula" name="email" required>	 
                 <span class="focus-efecto"></span> 
             </div> 
 
