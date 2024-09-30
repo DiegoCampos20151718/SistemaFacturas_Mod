@@ -1,6 +1,36 @@
 <?php
 include("php/check_session.php");
+include("php/database.php");
+
+// Validar si la sesión contiene la oficina
+if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
+
+    // Prepara la consulta para evitar inyección SQL
+    $stmt = $connecction->prepare("SELECT nombre FROM unidades WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $uniCor = "";
+
+    // Verifica si hay resultados y guarda el nombre en una variable
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $uniCor = $row['nombre'];
+    } else {
+        $uniCor = "No se encontró la unidad";
+    }
+
+    $stmt->close(); // Cerrar la declaración preparada
+
+} else {
+    echo "No se ha establecido una oficina en la sesión.";
+}
+
+$connecction->close(); // Cerrar la conexión a la base de datos
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -108,11 +138,11 @@ include("php/check_session.php");
                     <span>Disponible en contratos</span></a>
             </li>
             <?php if ($_SESSION["rol"] == 1): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="registerUser.php">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Registro de nuevo usuario</span></a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="registerUser.php">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Registro de nuevo usuario</span></a>
+                </li>
             <?php endif; ?>
 
             <!-- Divider -->
@@ -150,23 +180,25 @@ include("php/check_session.php");
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                <?php
+                                    <?php
                                     function rol($rol)
                                     {
                                         switch ($rol) {
                                             case 1:
-                                                return "administrador";
+                                                return "Administrador";
                                             case 2:
                                                 return "Usuario de oficina";
                                             case 3:
-                                                    return "Usuario para consulta";
+                                                return "Usuario para consulta";
                                             default:
-                                                return "desconocido";
+                                                return "Desconocido";
                                         }
                                     }
-                                    echo $_SESSION["oficina"] . "<br> " .$_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
+                                    // Imprimir el nombre de la unidad, nombre del usuario, apellido y rol
+                                    echo $uniCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
                                     ?>
                                 </span>
+
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
