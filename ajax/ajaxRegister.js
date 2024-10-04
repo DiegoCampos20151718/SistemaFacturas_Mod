@@ -68,13 +68,21 @@ $(document).ready(function() {
 
     $('#login-form').submit(function(e) {
         e.preventDefault();
-        var matricula = $('#matricula').val();
-        var password = $('#password').val();
-
+        
+        // Obtener valores
+        var matricula = $('#matricula').val().trim();
+        var password = $('#password').val().trim();
+    
+        if (matricula === '' || password === '') {
+            Swal.fire('Error', 'Por favor, ingresa tu matrícula y contraseña.', 'error');
+            return;
+        }
+    
+        // Enviar datos con AJAX
         $.ajax({
             type: 'POST',
             url: 'php/Login/login.php',
-            data: { matricula: matricula, password: password },
+            data: { matricula: matricula, password: password },  // Verifica que envías 'matricula' y 'password'
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
@@ -88,9 +96,10 @@ $(document).ready(function() {
                     Swal.fire('Error', response.message, 'error');
                 }
             },
-            error: function() {
-                Swal.fire('Error', 'Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.', 'error');
+            error: function(xhr) {
+                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.';
+                Swal.fire('Error', errorMessage, 'error');
             }
         });
-    });
+    });    
 });
