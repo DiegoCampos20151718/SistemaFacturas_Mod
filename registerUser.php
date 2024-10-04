@@ -4,6 +4,7 @@ include("php/check_session.php");
 include("php/database.php");
 
 // Obtener unidad perteneciente
+
 // Validar si la sesión contiene la oficina
 if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
@@ -24,6 +25,31 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
     } else {
         $uniCor = "No se encontró la unidad";
         $uniCor2 = "No se encontro la unidad";
+    }
+
+    $stmt->close(); // Cerrar la declaración preparada
+
+} else {
+    echo "No se ha establecido una oficina en la sesión.";
+}
+
+if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
+
+    // Prepara la consulta para evitar inyección SQL
+    $stmt = $connecction->prepare("SELECT oficina FROM oficinas WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $ofCor = "";
+
+    // Verifica si hay resultados y guarda el nombre en una variable
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $ofCor = $row['oficina'];
+    } else {
+        $ofCor = "No se encontró la unidad";
     }
 
     $stmt->close(); // Cerrar la declaración preparada
@@ -273,7 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             return "desconocido";
                                     }
                                 }
-                                echo $uniCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
+                                echo $ofCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
                                 ?></span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>

@@ -214,7 +214,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                 <?php
                                 function rol($rol)
                                 {
