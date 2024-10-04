@@ -288,7 +288,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
         <?php if ($_SESSION["rol"] == 1): ?>
             <!-- Mostrar la lista desplegable si rol es 1 -->
-            <select class="form-select" id="oficinas" name="oficina" required>
+            <select class="form-select" id="oficina" name="oficina" required>
                 <option selected>Selecciona la oficina correspondiente</option>
                 <?php foreach ($oficinas as $oficina): ?>
                     <option value="<?php echo $oficina['id']; ?>">
