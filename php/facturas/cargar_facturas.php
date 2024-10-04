@@ -1,16 +1,42 @@
 <?php
+session_start();
+
 $conexion = new mysqli("localhost", "root", "", "facturas");
 
+// Obtener los valores de la sesión
+$rol = $_SESSION["rol"];
+$oficina = $_SESSION["oficina"];
+
+// Construir la consulta SQL básica
 $query = "SELECT f.NoFactura, c.NoContrato, p.NomProveedor, f.Fecha, f.FechaDeFactura, f.Concepto, f.Observaciones, f.Tipo, f.CopiaFactura, o.oficina,
           SUM(cu.monto) AS monto_total
           FROM facturas f
           INNER JOIN contratos c ON f.NoContrato = c.NoContrato
           INNER JOIN proveedores p ON c.NoProveedor = p.NoProveedor
           INNER JOIN oficinas o ON f.oficina = o.id
-          LEFT JOIN cuentas cu ON f.NoFactura = cu.NoFactura
-          GROUP BY f.NoFactura, c.NoContrato, p.NomProveedor, f.Fecha, f.FechaDeFactura, f.Concepto, f.Observaciones, f.Tipo, f.CopiaFactura";
-$resultado = $conexion->query($query);
+          LEFT JOIN cuentas cu ON f.NoFactura = cu.NoFactura";
 
+// Si el rol no es 1, agregar condición para filtrar por oficina
+if ($rol != 1) {
+    $query .= " WHERE o.id = ?";
+}
+
+// Continuar con el agrupamiento
+$query .= " GROUP BY f.NoFactura, c.NoContrato, p.NomProveedor, f.Fecha, f.FechaDeFactura, f.Concepto, f.Observaciones, f.Tipo, f.CopiaFactura";
+
+// Preparar la consulta
+$stmt = $conexion->prepare($query);
+
+// Si el rol no es 1, enlazar la oficina como parámetro
+if ($rol != 1) {
+    $stmt->bind_param("i", $oficina);
+}
+
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+// Mostrar la tabla con los resultados
 echo '<table id="Data_Table" class="table table-striped table-bordered table-responsive table-hover text-center">';
 echo '<thead><tr><th>No. de Factura</th><th>No. Contrato</th><th>Proveedor</th><th>Fecha de Registro</th><th>Fecha de Factura</th><th>Concepto</th><th>Observaciones</th><th>Tipo</th><th>oficina</th><th>Copia de Factura</th><th>Monto Total</th><th>Acciones</th></tr></thead>';
 echo '<tbody>';
@@ -40,5 +66,6 @@ while ($fila = $resultado->fetch_assoc()) {
 echo '</tbody>';
 echo '</table>';
 
+// Cerrar la conexión
 $conexion->close();
-
+?>

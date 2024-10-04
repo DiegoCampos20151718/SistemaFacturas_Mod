@@ -33,18 +33,20 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
     // Prepara la consulta para evitar inyección SQL
-    $stmt = $connecction->prepare("SELECT oficina FROM oficinas WHERE id = ?");
+    $stmt = $connecction->prepare("SELECT id,oficina FROM oficinas WHERE id = ?");
     $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
 
     $stmt->execute();
     $result = $stmt->get_result();
 
     $ofCor = "";
+    $idof = "";
 
     // Verifica si hay resultados y guarda el nombre en una variable
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $ofCor = $row['oficina'];
+        $idof = $row['id'];
     } else {
         $ofCor = "No se encontró la unidad";
     }
@@ -53,6 +55,15 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
 } else {
     echo "No se ha establecido una oficina en la sesión.";
+}
+
+$sql = "SELECT id, oficina FROM oficinas";
+$result = $connecction->query($sql);
+$oficinas = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $oficinas[] = $row;
+    }
 }
 
 $connecction->close(); // Cerrar la conexión a la base de datos
@@ -205,12 +216,14 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                         <i class="fa fa-bars"></i>
                     </button>
                     <ul class="navbar-nav ml-auto d-flex justify-content-start">
-                        <li class="nav-item" style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
+                        <li class="nav-item"
+                            style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
                             <span class="mr-2 d-none d-lg-inline text-gray-600"
                                 style="font-size: 1.5rem; font-weight: bold;">
                                 Unidad: <?php echo $uniCor; ?> (<?php echo $uniCor2; ?>)
                             </span>
-                        </li>                        <li class="nav-item dropdown no-arrow">
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
@@ -269,6 +282,29 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-2">
+    <div class="form-group">
+        <label for="oficina" class="form-label">ID Oficina:</label>
+
+        <?php if ($_SESSION["rol"] == 1): ?>
+            <!-- Mostrar la lista desplegable si rol es 1 -->
+            <select class="form-select" id="oficinas" name="oficina" required>
+                <option selected>Selecciona la oficina correspondiente</option>
+                <?php foreach ($oficinas as $oficina): ?>
+                    <option value="<?php echo $oficina['id']; ?>">
+                        <?php echo $oficina['id'] . ' - ' . $oficina['oficina']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        <?php else: ?>
+            <!-- Mostrar el campo de texto en caso contrario -->
+            <input disabled type="text" class="form-control" id="oficina" name="oficina"
+                   value="<?php echo $idof, " - ", $ofCor; ?>" required>
+        <?php endif; ?>
+    </div>
+</div>
+
+
                                 </div>
 
                                 <!-- Información de la factura -->
@@ -312,25 +348,29 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                         </div>
                                     </div>
                                     <div>
-    <div>
-        <label class="form-label">Tipo:</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="tipo" id="tipo-contrato" value="C" checked>
-            <label class="form-check-label" for="tipo-contrato" style="position: relative; top: -5px;">Contrato</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="tipo" id="tipo-disponible" value="D">
-            <label class="form-check-label" for="tipo-disponible" style="position: relative; top: -5px;">Disponible</label>
-        </div>
-    </div>
-</div>
+                                        <div>
+                                            <label class="form-label">Tipo:</label>
+                                            <br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="tipo"
+                                                    id="tipo-contrato" value="C" checked>
+                                                <label class="form-check-label" for="tipo-contrato"
+                                                    style="position: relative; top: -5px;">Contrato</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="tipo"
+                                                    id="tipo-disponible" value="D">
+                                                <label class="form-check-label" for="tipo-disponible"
+                                                    style="position: relative; top: -5px;">Disponible</label>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                         </div>
 
                         <!-- Codificación y Montos -->
-                        <div class="row" >
+                        <div class="row">
                             <div class="col-md-3" style="margin-left: 15px;">
                                 <div class="form-group">
                                     <label for="codificacion-primaria" class="form-label">Codificación Primaria:</label>
@@ -348,7 +388,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                 </div>
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
-                            <button type="button" class="btn btn-success" id="agregar-monto" style="margin-top: 15px;">Agregar Monto</button>
+                                <button type="button" class="btn btn-success" id="agregar-monto"
+                                    style="margin-top: 15px;">Agregar Monto</button>
                             </div>
                         </div>
 
@@ -390,7 +431,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <button type="button" class="btn btn-success" id="agregar-monto" style="margin-top: 15px;">Agregar Monto</button>
+                                <button type="button" class="btn btn-success" id="agregar-monto"
+                                    style="margin-top: 15px;">Agregar Monto</button>
                             </div>
                         </div>
 
@@ -422,7 +464,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success" style="margin-top: 30px;">Guardar Factura</button>
+                                <button type="submit" class="btn btn-success" style="margin-top: 30px;">Guardar
+                                    Factura</button>
                             </div>
                         </div>
                         </form>

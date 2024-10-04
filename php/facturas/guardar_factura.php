@@ -1,19 +1,23 @@
 <?php
+session_start();
+
 $conexion = new mysqli("localhost", "root", "", "facturas");
 
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-$proveedor = $_POST['proveedor'];
-$tipo = $_POST['tipo'];
-$contrato = $_POST['contrato'];
-$noFactura = $_POST['no-factura'];
-$fechaRegistro = $_POST['fecha-registro'];
-$fechaFactura = $_POST['fecha-factura'];
-$concepto = $_POST['concepto'];
-$observaciones = $_POST['observaciones'];
-$copiaFactura = $_FILES['copia-factura']['name'];
+// Asegúrate de que todas las variables están disponibles
+$proveedor = $_POST['proveedor'] ?? null;
+$tipo = $_POST['tipo'] ?? null;
+$contrato = $_POST['contrato'] ?? null;
+$noFactura = $_POST['no-factura'] ?? null;
+$fechaRegistro = $_POST['fecha-registro'] ?? null;
+$fechaFactura = $_POST['fecha-factura'] ?? null;
+$concepto = $_POST['concepto'] ?? null;
+$observaciones = $_POST['observaciones'] ?? null;
+$copiaFactura = $_FILES['copia-factura']['name'] ?? null;
+$oficina = $_POST['oficina'] ?? null; // Corregido
 
 // Validaciones
 if (empty($proveedor)) {
@@ -26,21 +30,19 @@ if (empty($noFactura)) {
     exit;
 }
 
-if ($tipo == 'contrato') {
-    if (empty($contrato)) {
-        echo "Error: Debe seleccionar un contrato.";
-        exit;
-    }
-} else {
-    $codificacion = $_POST['codificacion'];
+if ($tipo == 'contrato' && empty($contrato)) {
+    echo "Error: Debe seleccionar un contrato.";
+    exit;
+} elseif ($tipo != 'contrato') {
+    $codificacion = $_POST['codificacion'] ?? null;
     if (empty($codificacion)) {
         echo "Error: Debe seleccionar una codificación.";
         exit;
     }
 }
 
-$query = "INSERT INTO facturas (NoProveedor, NomProveedor, NoContrato, NoFactura, Fecha, FechaDeFactura, Concepto, Observaciones, Tipo, CopiaFactura) 
-          VALUES ('$proveedor', (SELECT NomProveedor FROM proveedores WHERE NoProveedor = '$proveedor'), '$contrato', '$noFactura', '$fechaRegistro', '$fechaFactura', '$concepto', '$observaciones', '$tipo', '$copiaFactura')";
+$query = "INSERT INTO facturas (NoProveedor, NomProveedor, NoContrato, NoFactura, Fecha, FechaDeFactura, Concepto, Observaciones, Tipo, CopiaFactura, oficina) 
+          VALUES ('$proveedor', (SELECT NomProveedor FROM proveedores WHERE NoProveedor = '$proveedor'), '$contrato', '$noFactura', '$fechaRegistro', '$fechaFactura', '$concepto', '$observaciones', '$tipo', '$copiaFactura', '$oficina')";
 
 if ($conexion->query($query) === TRUE) {
     $ultimoId = $conexion->insert_id;

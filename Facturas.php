@@ -57,6 +57,11 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
 $connecction->close(); // Cerrar la conexión a la base de datos
 ?>
+<script>
+    var userOfice = <?php echo json_encode($_SESSION["oficina"]); ?>;
+    var userRole = <?php echo json_encode($_SESSION["rol"]); ?>; // Asumiendo que rol es un número
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 
