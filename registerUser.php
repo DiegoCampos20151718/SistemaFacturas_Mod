@@ -6,11 +6,11 @@ include("php/database.php");
 // Obtener unidad perteneciente
 
 // Validar si la sesión contiene la oficina
-if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
+if (isset($_SESSION['unidad']) && is_numeric($_SESSION['unidad'])) {
 
     // Prepara la consulta para evitar inyección SQL
     $stmt = $connecction->prepare("SELECT nombre,unidad FROM unidades WHERE id = ?");
-    $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
+    $stmt->bind_param("i", $_SESSION['unidad']); // "i" indica que es un entero
 
     $stmt->execute();
     $result = $stmt->get_result();
