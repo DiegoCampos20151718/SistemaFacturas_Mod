@@ -6,7 +6,7 @@ include("php/database.php");
 if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
     // Prepara la consulta para evitar inyección SQL
-    $stmt = $connecction->prepare("SELECT nombre FROM unidades WHERE id = ?");
+    $stmt = $connecction->prepare("SELECT nombre,unidad FROM unidades WHERE id = ?");
     $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
 
     $stmt->execute();
@@ -17,9 +17,11 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
     // Verifica si hay resultados y guarda el nombre en una variable
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $uniCor = $row['nombre'];
+        $uniCor = $row['unidad'];
+        $uniCor2 = $row['nombre'];
     } else {
         $uniCor = "No se encontró la unidad";
+        $uniCor2 = "No se encontro la unidad";
     }
 
     $stmt->close(); // Cerrar la declaración preparada
@@ -188,11 +190,13 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                 
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                    
-
-                        
+                    <ul class="navbar-nav ml-auto d-flex justify-content-start">
+                        <li class="nav-item" style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600"
+                                style="font-size: 1.5rem; font-weight: bold;">
+                                Unidad: <?php echo $uniCor; ?> (<?php echo $uniCor2; ?>)
+                            </span>
+                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 

@@ -6,7 +6,7 @@ include("php/database.php");
 if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
     // Prepara la consulta para evitar inyección SQL
-    $stmt = $connecction->prepare("SELECT nombre FROM unidades WHERE id = ?");
+    $stmt = $connecction->prepare("SELECT nombre,unidad FROM unidades WHERE id = ?");
     $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
 
     $stmt->execute();
@@ -17,9 +17,36 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
     // Verifica si hay resultados y guarda el nombre en una variable
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $uniCor = $row['nombre'];
+        $uniCor = $row['unidad'];
+        $uniCor2 = $row['nombre'];
     } else {
         $uniCor = "No se encontró la unidad";
+        $uniCor2 = "No se encontro la unidad";
+    }
+
+    $stmt->close(); // Cerrar la declaración preparada
+
+} else {
+    echo "No se ha establecido una oficina en la sesión.";
+}
+
+if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
+
+    // Prepara la consulta para evitar inyección SQL
+    $stmt = $connecction->prepare("SELECT oficina FROM oficinas WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['oficina']); // "i" indica que es un entero
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $ofCor = "";
+
+    // Verifica si hay resultados y guarda el nombre en una variable
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $ofCor = $row['oficina'];
+    } else {
+        $ofCor = "No se encontró la unidad";
     }
 
     $stmt->close(); // Cerrar la declaración preparada
@@ -171,32 +198,40 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     </button>
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
+                    <ul class="navbar-nav ml-auto d-flex justify-content-start">
+                        <li class="nav-item" style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600"
+                                style="font-size: 1.5rem; font-weight: bold;">
+                                Unidad: <?php echo $uniCor; ?> (<?php echo $uniCor2; ?>)
+                            </span>
+                        </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
+
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php
-                                    function rol($rol)
-                                    {
-                                        switch ($rol) {
-                                            case 1:
-                                                return "Administrador";
-                                            case 2:
-                                                return "Usuario de oficina";
-                                            case 3:
-                                                return "Usuario para consulta";
-                                            default:
-                                                return "Desconocido";
-                                        }
+
+
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <?php
+                                function rol($rol)
+                                {
+                                    switch ($rol) {
+                                        case 1:
+                                            return "Administrador";
+                                        case 2:
+                                            return "Usuario de oficina";
+                                        case 3:
+                                            return "Usuario para consulta";
+                                        default:
+                                            return "Desconocido";
                                     }
-                                    // Imprimir el nombre de la unidad, nombre del usuario, apellido y rol
-                                    echo $uniCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
-                                    ?>
+                                }
+                                // Imprimir el nombre de la unidad, nombre del usuario, apellido y rol
+                                echo $ofCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
+                                ?>
                                 </span>
 
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
