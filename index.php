@@ -116,7 +116,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                 Menú
             </div>
 
-            <li class="nav-item">
+            <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
+                <li class="nav-item">
                 <a class="nav-link" href="RegistroFactura.php">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar Factura</span></a>
@@ -126,6 +127,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar disponibilidad</span></a>
             </li>
+           <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link" href="Facturas.php">
                     <i class="fas fa-fw fa-solid fa-file"></i>

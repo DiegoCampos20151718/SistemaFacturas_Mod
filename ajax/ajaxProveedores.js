@@ -49,29 +49,32 @@ $(function() {
     });
 
     //Mostrar datos en la tabla
-    function fetchTasks(){
+    function fetchTasks() {
         $.ajax({
             url: "php/proveedores/tabla-proveedores.php",
             type: "GET",
-            success: function(response){
+            success: function(response) {
                 const tasks = JSON.parse(response);
-                
+
                 let template = ``;
-                tasks.forEach(task =>{
+                tasks.forEach(task => {
                     template += `
                     <tr taskId="${task.NoProveedor}">
                         <td>${task.NoProveedor}</td>
                         <td>${task.NomProveedor}</td>
-                        <td>
-                        <button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>
-                        <button class="btn btn-primary text-center task-item" ><i class="bi bi-pencil-square"></i></button>
-                        </td>
-                    </tr> 
+                       ${userRole == 1 || userRole == 2 ? ` <td>
+                            ${userRole == 1 ? `<button class="btn btn-danger text-center task-delete"><i class="bi bi-trash"></i></button>` : ''}
+                           ${userRole == 1 || userRole == 2 ? ` <button class="btn btn-primary text-center task-item"><i class="bi bi-pencil-square"></i></button>` : ''}
+                        </td>` : ''}
+                    </tr>
                     `;
-                })
+                });
                 $("#proveedores").html(template);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al obtener los proveedores: ", error);
             }
-        })
+        });
     }
 
     //ELIMINAR

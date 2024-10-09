@@ -38,7 +38,7 @@ $resultado = $stmt->get_result();
 
 // Mostrar la tabla con los resultados
 echo '<table id="Data_Table" class="table table-striped table-bordered table-responsive table-hover text-center">';
-echo '<thead><tr><th>No. de Factura</th><th>No. Contrato</th><th>Proveedor</th><th>Fecha de Registro</th><th>Fecha de Factura</th><th>Concepto</th><th>Observaciones</th><th>Tipo</th><th>oficina</th><th>Copia de Factura</th><th>Monto Total</th><th>Acciones</th></tr></thead>';
+echo '<thead><tr><th>No. de Factura</th><th>No. Contrato</th><th>Proveedor</th><th>Fecha de Registro</th><th>Fecha de Factura</th><th>Concepto</th><th>Observaciones</th><th>Tipo</th><th>Oficina</th><th>Copia de Factura</th><th>Monto Total</th><th>Acciones</th></tr></thead>';
 echo '<tbody>';
 
 while ($fila = $resultado->fetch_assoc()) {
@@ -53,13 +53,17 @@ while ($fila = $resultado->fetch_assoc()) {
     echo '<td>' . $fila['Tipo'] . '</td>';
     echo '<td>' . $fila['oficina'] . '</td>';
     echo '<td>' . $fila['CopiaFactura'] . '</td>';
-    echo '<td> ' . number_format($fila['monto_total'], 2)  . '<button class="btn btn-info btn-detalle-monto" data-bs-toggle="modal" data-bs-target="#detalleModal" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-info-circle-fill"></i></button>';
+    echo '<td>' . number_format($fila['monto_total'], 2) . '<button class="btn btn-info btn-detalle-monto" data-bs-toggle="modal" data-bs-target="#detalleModal" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-info-circle-fill"></i></button></td>';
     
-    echo '<td>
-            <button class="btn btn-primary btn-ver-factura" data-toggle="modal" data-target="#facturaModal" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-eye-fill"></i></button>
-            
-            <button class="btn btn-danger btn-eliminar-factura" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-trash-fill"></i></button>
-         </td>';
+    echo '<td>';
+    echo '<button class="btn btn-primary btn-ver-factura" data-toggle="modal" data-target="#facturaModal" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-eye-fill"></i></button>';
+    
+    // Verificar si el rol es 1 para mostrar el botón de eliminar
+    if ($rol == 1) {
+        echo '<button class="btn btn-danger btn-eliminar-factura" data-factura="' . $fila['NoFactura'] . '"><i class="bi bi-trash-fill"></i></button>';
+    }
+    
+    echo '</td>';
     echo '</tr>';
 }
 
@@ -69,3 +73,4 @@ echo '</table>';
 // Cerrar la conexión
 $conexion->close();
 ?>
+

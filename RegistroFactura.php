@@ -138,7 +138,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
+                <li class="nav-item">
                 <a class="nav-link" href="RegistroFactura.php">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar Factura</span></a>
@@ -148,6 +149,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar disponibilidad</span></a>
             </li>
+           <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link" href="Facturas.php">
                     <i class="fas fa-fw fa-solid fa-file"></i>
@@ -282,27 +284,28 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-    <div class="form-group">
-        <label for="oficina" class="form-label">ID Oficina:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
 
-        <?php if ($_SESSION["rol"] == 1): ?>
-            <!-- Mostrar la lista desplegable si rol es 1 -->
-            <select class="form-select" id="oficina" name="oficina" required>
-                <option selected>Selecciona la oficina correspondiente</option>
-                <?php foreach ($oficinas as $oficina): ?>
-                    <option value="<?php echo $oficina['id']; ?>">
-                        <?php echo $oficina['id'] . ' - ' . $oficina['oficina']; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        <?php else: ?>
-            <!-- Mostrar el campo de texto en caso contrario -->
-            <input disabled type="text" class="form-control" id="oficina" name="oficina"
-                   value="<?php echo $idof, " - ", $ofCor; ?>" required>
-        <?php endif; ?>
-    </div>
-</div>
+                                            <?php if ($_SESSION["rol"] == 1): ?>
+                                                <!-- Mostrar la lista desplegable si rol es 1 -->
+                                                <label for="oficina" class="form-label">Oficina:</label>
+                                                <select class="form-select" id="oficina" name="oficina" required>
+                                                    <option selected>Selecciona la oficina correspondiente</option>
+                                                    <?php foreach ($oficinas as $oficina): ?>
+                                                        <option value="<?php echo $oficina['id']; ?>">
+                                                            <?php echo $oficina['id'] . ' - ' . $oficina['oficina']; ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            <?php else: ?>
+                                                <!-- Mostrar el campo de texto en caso contrario -->
+                                                <input type="hidden" id="oficina" name="oficina" value="<?php echo $idof; ?>">
+
+
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
 
 
                                 </div>

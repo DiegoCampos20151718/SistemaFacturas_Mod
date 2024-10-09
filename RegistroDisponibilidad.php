@@ -78,14 +78,17 @@ $connecction->close(); // Cerrar la conexión a la base de datos
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
- <!-- Icons boostrap-->
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
- <link rel="stylesheet" href="#">
+    <!-- Icons boostrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="#">
     <!-- Custom styles for this template-->
-    <link rel="shortcut icon" href="img/imss-logo-gret.png"/>
+    <link rel="shortcut icon" href="img/imss-logo-gret.png" />
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </head>
 
 <body id="page-top">
@@ -98,9 +101,9 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                    <div class="sidebar-brand-icon center">
-                        <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
-                    </div>
+                <div class="sidebar-brand-icon center">
+                    <img src="img/imsslogo.png" alt="IMSS Logo" style="width: 50px; height: 50px;">
+                </div>
             </a>
 
             <!-- Divider -->
@@ -122,7 +125,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
+                <li class="nav-item">
                 <a class="nav-link" href="RegistroFactura.php">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar Factura</span></a>
@@ -132,6 +136,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar disponibilidad</span></a>
             </li>
+           <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link" href="Facturas.php">
                     <i class="fas fa-fw fa-solid fa-file"></i>
@@ -148,7 +153,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
             <!-- Heading -->
             <div class="sidebar-heading">
-            Mas acciones
+                Mas acciones
             </div>
             <!-- Nav Item - Proveedores -->
             <li class="nav-item">
@@ -170,13 +175,13 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <i class="fas fa-fw fa-table"></i>
                     <span>Disponible en contratos</span></a>
             </li>
-            
+
             <?php if ($_SESSION["rol"] == 1): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="registerUser.php">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Registro de nuevo usuario</span></a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="registerUser.php">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Registro de nuevo usuario</span></a>
+                </li>
             <?php endif; ?>
 
             <!-- Divider -->
@@ -205,11 +210,12 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     </button>
 
                     <!-- Topbar Search -->
-                    
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto d-flex justify-content-start">
-                        <li class="nav-item" style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
+                        <li class="nav-item"
+                            style="margin-right: 5rem; margin-top: 0.5rem; position: absolute; left: 0;">
                             <span class="mr-2 d-none d-lg-inline text-gray-600"
                                 style="font-size: 1.5rem; font-weight: bold;">
                                 Unidad: <?php echo $uniCor; ?> (<?php echo $uniCor2; ?>)
@@ -222,28 +228,27 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php
-                                    function rol($rol)
-                                    {
-                                        switch ($rol) {
-                                            case 1:
-                                                return "administrador";
-                                            case 2:
-                                                return "Usuario de oficina";
-                                            case 3:
-                                                    return "Usuario para consulta";
-                                            default:
-                                                return "desconocido";
-                                        }
+                                function rol($rol)
+                                {
+                                    switch ($rol) {
+                                        case 1:
+                                            return "administrador";
+                                        case 2:
+                                            return "Usuario de oficina";
+                                        case 3:
+                                            return "Usuario para consulta";
+                                        default:
+                                            return "desconocido";
                                     }
-                                    echo $ofCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
-                                    ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                }
+                                echo $ofCor . "<br>" . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . "<br> " . rol($_SESSION["rol"]);
+                                ?></span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
+
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar Sesion
@@ -258,79 +263,89 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    
-                    <!-- Modal -->
-                    <div class="modal fade" id="nuevoCodigoModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="nuevoCodigoModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" >
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="nuevoCodigoModalLabel">Nueva Codificación</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="nuevoCodigoForm">
-                                  <div class="form-group">
-                                    <label for="cuentaInput">Cuenta</label>
-                                    <input type="text" class="form-control" id="cuentaInput" required maxlength="8" autocomplete="off">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="udeiInput">UDEI</label>
-                                    <input type="text" class="form-control" id="udeiInput" required maxlength="6" autocomplete="off">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="ccInput">CC</label>
-                                    <input type="text" class="form-control" id="ccInput" required maxlength="6" autocomplete="off">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="anio">Año</label>
-                                    <select class="form-select" aria-label="Default select example" id="anioInput" name="anio" required ></select>
-                                    <script>
-                                        function generarOpcionesAnos(anoInicial, cantidadAnos) {
-                                            const selectAno = document.getElementById('anioInput');
-                                                                    
-                                            selectAno.innerHTML = '';
 
-                                            const opcionVacia = document.createElement('option');
-                                            opcionVacia.value = '';
-                                            opcionVacia.text = 'Seleccione un año';
-                                            selectAno.add(opcionVacia);
-                                        
-                                        
-                                            for (let i = 0; i < cantidadAnos; i++) {
-                                                const ano = anoInicial + i;
-                                                const opcion = document.createElement('option');
-                                                opcion.value = ano;
-                                                opcion.text = ano;
-                                                selectAno.add(opcion);
-                                            }
-                                        }
-                                        
-                                        window.onload = function() {
-                                            const fechaActual = new Date();
-                                            const anoActual = fechaActual.getFullYear();
-                                            generarOpcionesAnos(anoActual, 2); 
-                                        };
-                                    </script>
-                                  </div>
-                                  <button type="submit" class="btn btn-primary" id="guardarCodigoBtn">Guardar</button>
-                                </form>
-                              </div>
-                        </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="nuevoCodigoModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="nuevoCodigoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="nuevoCodigoModalLabel">Nueva Codificación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="nuevoCodigoForm">
+                                        <div class="form-group">
+                                            <label for="cuentaInput">Cuenta</label>
+                                            <input type="text" class="form-control" id="cuentaInput" required
+                                                maxlength="8" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="udeiInput">UDEI</label>
+                                            <input type="text" class="form-control" id="udeiInput" required
+                                                maxlength="6" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ccInput">CC</label>
+                                            <input type="text" class="form-control" id="ccInput" required maxlength="6"
+                                                autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="anio">Año</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                id="anioInput" name="anio" required></select>
+                                            <script>
+                                                function generarOpcionesAnos(anoInicial, cantidadAnos) {
+                                                    const selectAno = document.getElementById('anioInput');
+
+                                                    selectAno.innerHTML = '';
+
+                                                    const opcionVacia = document.createElement('option');
+                                                    opcionVacia.value = '';
+                                                    opcionVacia.text = 'Seleccione un año';
+                                                    selectAno.add(opcionVacia);
+
+
+                                                    for (let i = 0; i < cantidadAnos; i++) {
+                                                        const ano = anoInicial + i;
+                                                        const opcion = document.createElement('option');
+                                                        opcion.value = ano;
+                                                        opcion.text = ano;
+                                                        selectAno.add(opcion);
+                                                    }
+                                                }
+
+                                                window.onload = function () {
+                                                    const fechaActual = new Date();
+                                                    const anoActual = fechaActual.getFullYear();
+                                                    generarOpcionesAnos(anoActual, 2);
+                                                };
+                                            </script>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"
+                                            id="guardarCodigoBtn">Guardar</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Modal para editar datos -->
-                    <div class="modal fade" id="editarDatosModal" tabindex="-1" aria-labelledby="editarDatosModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editarDatosModal" tabindex="-1" aria-labelledby="editarDatosModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="editarDatosModalLabel">Editar Datos</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="editarDatosForm">
                                         <div class="form-group">
                                             <label for="editarImporteDefInput">Importe Def</label>
-                                            <input type="number" class="form-control" id="editarImporteDefInput" required>
+                                            <input type="number" class="form-control" id="editarImporteDefInput"
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <label for="editarCargosInput">Cargos</label>
@@ -339,56 +354,60 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                         <input type="hidden" id="editarMesInput">
                                         <input type="hidden" id="editarAnioInput">
                                         <input type="hidden" id="editarCodificacionInput">
-                                        <button type="submit" class="btn btn-primary" id="guardarEdicionBtn">Guardar</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            id="guardarEdicionBtn">Guardar</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                   <!--TABLA-->
-                   <div class="container mt-5">
-                    <h1>Registro de disponibilidad</h1>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <select class="form-select" aria-label="" name="codificacion" id="codigoInput">
-                          <option value="">Selecciona una opcion</option>
-                        </select>
-                      </div>
-                      <div class="col-md-2">
-                        <select class="form-select" aria-label="" name="year" id="yearInput">
-                          <option value="">Selecciona año</option>
-                        </select>
-                      </div>
-                      <div class="col-md-3">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoCodigoModal">
-                          <i class="bi bi-plus-circle">Agregar codificacion</i>
-                        </button>
-                      </div>
-                      <div class="col-md-3">
-                        <button type="button" class="btn btn-danger" id="eliminar-codificacion-btn">
-                          <i class="bi bi-trash">Eliminar codificacion</i>
-                        </button>
-                      </div>
+                    <!--TABLA-->
+                    <div class="container mt-5">
+                        <h1>Registro de disponibilidad</h1>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select class="form-select" aria-label="" name="codificacion" id="codigoInput">
+                                    <option value="">Selecciona una opcion</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" aria-label="" name="year" id="yearInput">
+                                    <option value="">Selecciona año</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#nuevoCodigoModal">
+                                    <i class="bi bi-plus-circle">Agregar codificacion</i>
+                                </button>
+                            </div>
+                            <?php if ($_SESSION["rol"] == 1): ?>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-danger" id="eliminar-codificacion-btn">
+                                        <i class="bi bi-trash">Eliminar codificacion</i>
+                                    </button>
+                                </div>a
+                            <?php endif; ?>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mt-3 text-center w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Mes</th>
+                                        <th>Año</th>
+                                        <th>Importe Def</th>
+                                        <th>Cargos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover mt-3 text-center w-100">
-                        <thead>
-                          <tr>
-                            <th>Mes</th>
-                            <th>Año</th>
-                            <th>Importe Def</th>
-                            <th>Cargos</th>
-                            <th>Acciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                <!--TABLA FIN-->
+                    <!--TABLA FIN-->
 
                 </div>
                 <!-- /.container-fluid -->
@@ -413,7 +432,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    
+
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -426,7 +445,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="php/logout.php">Cerrar sesión</a>

@@ -57,6 +57,9 @@ if (isset($_SESSION['oficina']) && is_numeric($_SESSION['oficina'])) {
 
 $connecction->close(); // Cerrar la conexión a la base de datos
 ?>
+<script>
+    var userRole = <?php echo json_encode($_SESSION["rol"]); ?>; // Asumiendo que rol es un número
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,7 +128,8 @@ $connecction->close(); // Cerrar la conexión a la base de datos
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
+                <li class="nav-item">
                 <a class="nav-link" href="RegistroFactura.php">
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar Factura</span></a>
@@ -135,6 +139,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <i class="fas fa-fw fa fa-archive"></i>
                     <span>Registrar disponibilidad</span></a>
             </li>
+           <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link" href="Facturas.php">
                     <i class="fas fa-fw fa-solid fa-file"></i>
@@ -265,11 +270,15 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                     <!--TABLA-->
                     <div class="p-3">
                         <div class="row">
+
+                        <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
                             <div class="col-md-3">
                                 <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
                                     data-bs-target="#provModal" id="agregarP"><i class="bi bi-file-earmark-plus">Agregar
                                         proveedor</i></button>
                             </div>
+           <?php endif; ?>
+                            
                             <!--Contenedor de busqueda-->
                             <div class="col-md-9">
                                 <div class="card my-4" id="task-result">
@@ -291,7 +300,10 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                         <tr>
                                             <td>Numero del proveedor</td>
                                             <td>Nombre</td>
-                                            <td>Acciones</td>
+                                            <?php if ($_SESSION["rol"] == 1 || $_SESSION["rol"] ==  2): ?>
+                                                <td>Acciones</td>
+
+           <?php endif; ?>
                                         </tr>
                                     </thead>
                                     <tbody id="proveedores">
