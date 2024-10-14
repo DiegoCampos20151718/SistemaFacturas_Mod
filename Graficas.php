@@ -2,6 +2,29 @@
 include("php/check_session.php");
 include("php/database.php");
 
+// Contabilizar facturas registradas este año
+$year = date("Y");
+$stmt_facturas = $connecction->prepare("SELECT COUNT(*) as total_facturas FROM facturas WHERE YEAR(FechaDeFactura) = ?");
+$stmt_facturas->bind_param("i", $year);
+$stmt_facturas->execute();
+$result_facturas = $stmt_facturas->get_result();
+$total_facturas = $result_facturas->fetch_assoc()['total_facturas'];
+$stmt_facturas->close();
+
+// Contabilizar contratos vigentes
+$stmt_contratos = $connecction->prepare("SELECT COUNT(*) as total_contratos FROM contratos WHERE VigenciaFin >= CURDATE()");
+$stmt_contratos->execute();
+$result_contratos = $stmt_contratos->get_result();
+$total_contratos = $result_contratos->fetch_assoc()['total_contratos'];
+$stmt_contratos->close();
+
+// Contabilizar proveedores activos
+$stmt_proveedores = $connecction->prepare("SELECT COUNT(*) as total_proveedores FROM proveedores");
+$stmt_proveedores->execute();
+$result_proveedores = $stmt_proveedores->get_result();
+$total_proveedores = $result_proveedores->fetch_assoc()['total_proveedores'];
+$stmt_proveedores->close();
+
 // Validar si la sesión contiene la oficina
 if (isset($_SESSION['unidad']) && is_numeric($_SESSION['unidad'])) {
 
@@ -87,7 +110,27 @@ $connecction->close(); // Cerrar la conexión a la base de datos
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 </head>
-
+<style>
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .card-body {
+            text-align: center;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .card-icon {
+            font-size: 3rem;
+            color: #4e73df;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            margin-top: 30px;
+        }
+    </style>
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -259,6 +302,44 @@ $connecction->close(); // Cerrar la conexión a la base de datos
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                <div class="container my-5">
+        <h1 class="text-center mb-5">Resumen de Actividades</h1>
+        <div class="row stats-grid">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <h5 class="card-title">Facturas registradas</h5>
+                        <p class="card-text"><?php echo $total_facturas; ?> facturas este año</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h5 class="card-title">Contratos vigentes</h5>
+                        <p class="card-text"><?php echo $total_contratos; ?> contratos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h5 class="card-title">Proveedores activos</h5>
+                        <p class="card-text"><?php echo $total_proveedores; ?> proveedores</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
                     <div class="container my-5">
                         <h1>Graficas</h1>
                         <div class="row">
