@@ -396,7 +396,6 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                             </div>
                         </div>
 
-
                         <!-- Tabla de Montos -->
                         <div class="table-responsive">
                             <table class="table table-bordered" id="tabla-montos">
@@ -427,14 +426,14 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label class="form-label">Monto:</label>
+                                    <label for="monto" class="form-label">Monto:</label>
                                     <input type="number" class="form-control" id="monto" name="monto"
-                                        placeholder="Monto de apoyo" step="0.01" autocomplete="off">
-
+                                        placeholder="Monto" step="0.01">
                                 </div>
 
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <button type="button" class="btn btn-success" id="agregar-monto"
+                                <button type="button" class="btn btn-success" id="agregar-apoyo"
                                     style="margin-top: 15px;">Agregar Monto</button>
                             </div>
                         </div>
@@ -451,7 +450,6 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
 
@@ -467,7 +465,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success" style="margin-top: 30px;">Guardar
+                                <button type="submit" class="btn btn-success" id="formulario-registro-factura" style="margin-top: 30px;">Guardar
                                     Factura</button>
                             </div>
                         </div>

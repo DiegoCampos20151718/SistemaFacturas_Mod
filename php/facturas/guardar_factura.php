@@ -48,29 +48,29 @@ if ($conexion->query($query) === TRUE) {
     $ultimoId = $conexion->insert_id;
 
     // Guardar las cuentas primarias
-    if (isset($_POST['cuentaP'])) {
-        $cuentaP = $_POST['cuentaP'];
-        $udeiP = $_POST['udeiP'];
-        $ccP = $_POST['ccP'];
-        $montoP = $_POST['montoP'];
+    if (isset($_POST['codificacion-primaria'])) {
+        $cuentaP = substr($_POST['codificacion-primaria'], 0, 8);
+        $udeiP = substr($_POST['codificacion-primaria'], 8, 5);
+        $ccP = substr($_POST['codificacion-primaria'], 13, 7);
+        $montoP = $_POST['monto-primario'];
 
-        foreach ($cuentaP as $key => $value) {
+        // foreach ($cuentaP as $key => $value) {
             $query = "INSERT INTO cuentas (NoFactura, cuenta, udei, cc, monto, concepto, fecha, codificacion) 
-                      VALUES ('$noFactura', '$value', '$udeiP[$key]', '$ccP[$key]', '$montoP[$key]', 'P', '$fechaFactura', CONCAT('$value', '$udeiP[$key]', '$ccP[$key]'))";
+                      VALUES ('$noFactura', '$cuentaP', '$udeiP', '$ccP', '$montoP', 'P', '$fechaFactura', CONCAT('$cuentaP', '$udeiP', '$ccP'))";
             $conexion->query($query);
-        }
+        // }
     }
 
     // Guardar las cuentas de apoyo
-    if (isset($_POST['cuenta'])) {
-        $cuentas = $_POST['cuenta'];
-        $udeis = $_POST['udei'];
-        $ccs = $_POST['cc'];
+    if (isset($_POST['codificacion'])) {
+        $cuentas = substr($_POST['codificacion'], 0, 8);
+        $udeis = substr($_POST['codificacion'], 8, 5);
+        $ccs = substr($_POST['codificacion'], 13, 7);
         $montos = $_POST['monto'];
 
         foreach ($cuentas as $key => $value) {
             $query = "INSERT INTO cuentas (NoFactura, cuenta, udei, cc, monto, concepto, fecha, codificacion) 
-                      VALUES ('$noFactura', '$value', '$udeis[$key]', '$ccs[$key]', '$montos[$key]', 'A', '$fechaFactura', CONCAT('$value', '$udeis[$key]', '$ccs[$key]'))";
+                      VALUES ('$noFactura', '$cuentas', '$udeis', '$ccs', '$montos', 'A', '$fechaFactura', CONCAT('$cuentas', '$udeis', '$ccs'))";
             $conexion->query($query);
         }
     }
@@ -105,4 +105,3 @@ if ($conexion->query($query) === TRUE) {
 }
 
 $conexion->close();
-
