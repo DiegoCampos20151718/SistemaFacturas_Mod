@@ -398,7 +398,6 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                         <th>Año</th>
                                         <th>Importe Def</th>
                                         <th>Cargos</th>
-                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
