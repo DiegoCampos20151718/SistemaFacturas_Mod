@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card o-hidden shadow-lg my-5 mx-auto" style="max-width: 500px;">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
-                        <div class="row justify-content-center align-items-center" style="height: 100vh;">
+                        <div class="row justify-content-center align-items-center">
                             <div class="col-lg-12">
                                 <div class="p-3">
                                     <div class="text-center">

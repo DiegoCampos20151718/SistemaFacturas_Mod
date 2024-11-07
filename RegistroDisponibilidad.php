@@ -387,7 +387,7 @@ $connecction->close(); // Cerrar la conexión a la base de datos
                                     <button type="button" class="btn btn-danger" id="eliminar-codificacion-btn">
                                         <i class="bi bi-trash">Eliminar codificacion</i>
                                     </button>
-                                </div>a
+                                </div>
                             <?php endif; ?>
                         </div>
                         <div class="table-responsive">

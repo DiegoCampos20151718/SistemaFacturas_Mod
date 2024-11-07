@@ -13,7 +13,8 @@ if ($conn->connect_error) {
 }
 
 // Consulta preparada para evitar inyección SQL
-$query = "SELECT id, matricula, nombre, apellido, rol, oficina, unidad, password FROM usuarios WHERE matricula = ?";
+$query = "SELECT id, matricula, nombre, apellido, rol, oficina, unidad, 
+password FROM usuarios WHERE matricula = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $matricula);  // Cambiar email a matricula
 $stmt->execute();

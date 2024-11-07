@@ -8,7 +8,11 @@ $(function() {
             success: function(data) {
                 $('#codigoInput').empty().append('<option value="">Selecciona una opción</option>');
                 $.each(data, function(index, codificacion) {
-                    $('#codigoInput').append('<option value="' + codificacion + '">' + codificacion + '</option>');
+                    // Formatear la codificación en formato 8-5-7
+                    var formattedCodificacion = `${codificacion.substring(0, 8)}-${codificacion.substring(8, 13)}-${codificacion.substring(13)}`;
+                    
+                    // Agregar la opción con el formato formateado
+                    $('#codigoInput').append('<option value="' + codificacion + '">' + formattedCodificacion + '</option>');
                 });
             },
             error: function(xhr, status, error) {
@@ -21,6 +25,7 @@ $(function() {
             }
         });
     }
+    
 
     // Función para cargar los años según la codificación seleccionada
     function loadYears(codificacion) {
@@ -46,41 +51,96 @@ $(function() {
         });
     }
 
-    // Función para cargar los datos en la tabla
-    function loadData(codificacion, year) {
+   // Función para cargar los datos en la tabla
+function loadData(codificacion, year) {
+    $.ajax({
+        url: "php/disponibilidad/obtener_datos.php",
+        type: "GET",
+        data: { codificacion: codificacion, year: year },
+        dataType: "json",
+        success: function(data) {
+            var $table = $("table tbody");
+            $table.empty();
+            $.each(data, function(index, row) {
+                $table.append(`
+                    <tr>
+                        <td>${row.mes}</td>
+                        <td>${row.anio}</td>
+                        <td><input type="text" class="form-control importeDef-input" value="${row.importeDef}" data-mes="${row.mes}" data-anio="${row.anio}" data-codificacion="${row.codificacion}"></td>
+                        <td><input type="text" class="form-control cargos-input" value="${row.cargos}" data-mes="${row.mes}" data-anio="${row.anio}" data-codificacion="${row.codificacion}"></td>
+                    </tr>
+                `);
+            });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Error al cargar los datos',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    });
+}
+
+// Evento delegado para guardar cambios al presionar Enter
+$("table tbody").on("keypress", "input", function(e) {
+    if (e.which === 13) {  // Código 13 para Enter
+        var $input = $(this);
+        var mes = $input.data("mes");
+        var anio = $input.data("anio");
+        var codificacion = $input.data("codificacion");
+        var importeDef = $input.closest("tr").find(".importeDef-input").val();
+        var cargos = $input.closest("tr").find(".cargos-input").val();
+
+        // Enviar los cambios al servidor
         $.ajax({
-            url: "php/disponibilidad/obtener_datos.php",
-            type: "GET",
-            data: { codificacion: codificacion, year: year },
-            dataType: "json",
-            success: function(data) {
-                var $table = $("table tbody");
-                $table.empty();
-                $.each(data, function(index, row) {
-                    var acciones = `
-                        <button class="btn btn-primary btn-sm editar-btn" data-mes="${row.mes}" data-anio="${row.anio}" data-codificacion="${row.codificacion}" data-importedef="${row.importeDef}" data-cargos="${row.cargos}"><i class="bi bi-pencil-square"></i></button>
-                    `;
-                    $table.append(`
-                        <tr>
-                            <td>${row.mes}</td>
-                            <td>${row.anio}</td>
-                            <td>${row.importeDef}</td>
-                            <td>${row.cargos}</td>
-                            <td>${acciones}</td>
-                        </tr>
-                    `);
-                });
+            url: "php/disponibilidad/editar_datos.php",
+            type: "POST",
+            data: {
+                mes: mes,
+                anio: anio,
+                codificacion: codificacion,
+                importeDef: importeDef,
+                cargos: cargos
             },
-            error: function(xhr, status, error) {
+            success: function(response) {
+                // Registrar la respuesta en consola para depuración
+                console.log("Respuesta del servidor:", response);
+                
+                if (response && response.success) {
+                    Swal.fire({
+                        title: 'Guardado',
+                        text: response.message, // Usar el mensaje de la respuesta
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    // Indicación visual de éxito
+                    $input.css("background-color", "#d4edda");  // Verde claro
+                    setTimeout(() => $input.css("background-color", ""), 1500);
+                } else {
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.message || 'Datos guardados con exito', // Usar mensaje de error si está disponible
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            },
+            error: function(xhr, status, success) {
                 Swal.fire({
                     title: 'Error',
-                    text: 'Error al cargar los datos',
-                    icon: 'error',
+                    text: 'Ocurrió un error al guardar los datos',
+                    icon: 'Error',
                     confirmButtonText: 'Aceptar'
                 });
             }
         });
     }
+});
+
+
+    
 
     // Cargar las codificaciones al cargar la página
     loadCodificaciones();
